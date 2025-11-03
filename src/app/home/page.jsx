@@ -1,3 +1,5 @@
+import Footer from '@/components/Footer'
+import Hero from '@/components/home'
 import HeroSection from '@/components/home'
 import Navbar from '@/components/navbar'
 import React from 'react'
@@ -5,9 +7,8 @@ import React from 'react'
 const page = () => {
   return (
     <div>
-        <Navbar />
-        <br/><br/><br/>
-      <HeroSection />
+      <br/><br/>
+       <Hero/> 
     </div>
   )
 }

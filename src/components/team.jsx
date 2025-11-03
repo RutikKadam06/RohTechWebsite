@@ -29,9 +29,20 @@ const TeamSection = () => {
       color: 'from-blue-500 to-cyan-500'
     },
     {
-      name: 'Shubham Thakre',
+      name: 'Shubham Thakare',
       role: 'Full Stack Developer',
       photo: '/ST.png',
+      social: {
+        linkedin: '#',
+        instagram: '#',
+        github: '#'
+      },
+      color: 'from-green-500 to-emerald-500'
+    },
+    {
+      name: 'Anand Yadav',
+      role: 'Python Developer',
+      photo: '/anand.jpeg',
       social: {
         linkedin: '#',
         instagram: '#',
@@ -138,7 +149,7 @@ const TeamSection = () => {
     },
     hover: {
       scale: 1.1,
-      rotate: 5,
+      rotate: 2,
       transition: {
         duration: 0.4
       }
@@ -265,7 +276,7 @@ const TeamSection = () => {
               key={index}
               variants={cardVariants}
               whileHover={{ 
-                y: -15,
+                y: -5,
                 transition: { type: "spring", stiffness: 300 }
               }}
               className="group relative"
