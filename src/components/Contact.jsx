@@ -12,6 +12,7 @@ const Contact = () => {
     message: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [result, setResult] = useState("");
 
   const [ref, inView] = useInView({
     triggerOnce: true,
@@ -25,16 +26,37 @@ const Contact = () => {
     });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const onSubmit = async (event) => {
+    event.preventDefault();
     setIsSubmitting(true);
-    
-    // Simulate form submission
-    setTimeout(() => {
+    setResult("");
+
+    const submitFormData = new FormData();
+    submitFormData.append("access_key", "08ae2f22-1bf9-4e2b-a337-b0946ba1e05e");
+    submitFormData.append("name", formData.name);
+    submitFormData.append("email", formData.email);
+    submitFormData.append("subject", formData.subject);
+    submitFormData.append("message", formData.message);
+
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: submitFormData
+      });
+
+      const data = await response.json();
+      
+      if (data.success) {
+        setResult("Success! Thank you for your message. We'll get back to you soon.");
+        setFormData({ name: '', email: '', subject: '', message: '' });
+      } else {
+        setResult("Error: " + (data.message || "Something went wrong. Please try again."));
+      }
+    } catch (error) {
+      setResult("Error: Failed to send message. Please check your connection and try again.");
+    } finally {
       setIsSubmitting(false);
-      alert('Thank you for your message! We will get back to you soon.');
-      setFormData({ name: '', email: '', subject: '', message: '' });
-    }, 2000);
+    }
   };
 
   const containerVariants = {
@@ -246,7 +268,7 @@ const Contact = () => {
             animate={inView ? "visible" : "hidden"}
             className="relative"
           >
-            <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-blue-600 rounded-3xl blur opacity-20"></div>
+            <div className="absolute inset-0 "></div>
             <div className="relative bg-white/90 backdrop-blur-sm rounded-2xl p-8 shadow-2xl border border-gray-100">
               <motion.h3 
                 className="text-2xl font-bold text-gray-800 mb-6"
@@ -255,7 +277,22 @@ const Contact = () => {
                 Send us a Message
               </motion.h3>
 
-              <form onSubmit={handleSubmit} className="space-y-6">
+              {/* Result Message */}
+              {result && (
+                <motion.div 
+                  className={`mb-6 p-4 rounded-xl ${
+                    result.includes("Success") 
+                      ? "bg-green-100 text-green-800 border border-green-200" 
+                      : "bg-red-100 text-red-800 border border-red-200"
+                  }`}
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                >
+                  {result}
+                </motion.div>
+              )}
+
+              <form onSubmit={onSubmit} className="space-y-6">
                 <motion.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-gray-700 font-medium mb-2">Full Name</label>
@@ -266,7 +303,7 @@ const Contact = () => {
                       value={formData.name}
                       onChange={handleChange}
                       required
-                      className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all duration-300 outline-none"
+                      className="w-full px-4 py-3 text-black rounded-xl border border-gray-300 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all duration-300 outline-none"
                       placeholder="Enter your full name"
                     />
                   </div>
@@ -279,7 +316,7 @@ const Contact = () => {
                       value={formData.email}
                       onChange={handleChange}
                       required
-                      className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all duration-300 outline-none"
+                      className="w-full px-4 py-3 text-black rounded-xl border border-gray-300 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all duration-300 outline-none"
                       placeholder="Enter your email"
                     />
                   </div>
@@ -294,7 +331,7 @@ const Contact = () => {
                     value={formData.subject}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all duration-300 outline-none"
+                    className="w-full px-4 py-3 text-black rounded-xl border border-gray-300 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all duration-300 outline-none"
                     placeholder="What is this regarding?"
                   />
                 </motion.div>
@@ -308,7 +345,7 @@ const Contact = () => {
                     onChange={handleChange}
                     required
                     rows="5"
-                    className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all duration-300 outline-none resize-none"
+                    className="w-full px-4 py-3 text-black rounded-xl border border-gray-300 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all duration-300 outline-none resize-none"
                     placeholder="Tell us about your project..."
                   />
                 </motion.div>
