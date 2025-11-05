@@ -1,6 +1,6 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/Navbar";  // ✅ adjust the path based on your folder structure
+import Navbar from "@/components/navbar";  // ✅ adjust the path based on your folder structure
 import Footer from "@/components/Footer";  // ✅ adjust the path based on your folder structure
 
 const geistSans = Geist({
